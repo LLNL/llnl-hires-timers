@@ -24,6 +24,10 @@ set(CMAKE_REQUIRED_INCLUDES  sys/time.h)
 unset(CMAKE_REQUIRED_LIBRARIES)
 check_function_exists(gettimeofday ADEPT_UTILS_HAVE_GETTIMEOFDAY)
 
+set(CMAKE_REQUIRED_INCLUDES  mach/mach.h mach/mach_time.h)
+unset(CMAKE_REQUIRED_LIBRARIES)
+check_function_exists(mach_absolute_time ADEPT_UTILS_HAVE_MACH_TIME)
+
 # Configure a header file with all the variables we found.
 configure_file(
   ${PROJECT_SOURCE_DIR}/adept-utils-config.h.in

@@ -32,7 +32,7 @@
 ///
 /// @file timing.c
 /// @author Todd Gamblin tgamblin@llnl.gov
-/// Implementations for get_time_ns() using platform-specific, high resolution timers.
+/// Implementations for get_time_ns() using platform-specific high-resolution timers.
 ///
 #include <math.h>
 
@@ -115,6 +115,22 @@ timing_t get_time_ns() {
   struct timespec ts;
   clock_gettime(CLOCK_MONOTONIC, &ts);
   return (ts.tv_sec * 1000000000ll + ts.tv_nsec);
+}
+
+#elif defined(ADEPT_UTILS_HAVE_MACH_TIME)
+// -------------------------------------------------------- //
+// Timing code using Mach hires timers for Mac OS X.
+// -------------------------------------------------------- //
+
+#include <mach/mach.h>
+#include <mach/mach_time.h>
+
+timing_t get_time_ns() {
+  static mach_timebase_info_data_t timebase_info;
+  if (timebase_info.denom == 0) {
+    mach_timebase_info(&timebase_info);
+  }
+  return mach_absolute_time() * timebase_info.numer / timebase_info.denom;
 }
 
 
