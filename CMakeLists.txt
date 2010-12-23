@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 2.8)
 
 # Build shared libraries by default.
 get_property(DEFAULT_SHARED GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS)
-option(BUILD_SHARED_LIBS "Build shared libraries?" DEFAULT_SHARED)
+option(BUILD_SHARED_LIBS "Build shared libraries?" ${DEFAULT_SHARED})
 
 # Check for various timing functions, so we can support highest-resolution timers available.
 include(CheckFunctionExists)
