@@ -1,12 +1,6 @@
 #ifndef ADEPT_UTILS_CONFIG_H_
 #define ADEPT_UTILS_CONFIG_H_
 
-// Define if we're on a BlueGene/L system
-#cmakedefine ADEPT_UTILS_BLUEGENE_L
-
-// Define if we're on a BlueGene/P system
-#cmakedefine ADEPT_UTILS_BLUEGENE_P
-
 // Define if the POSIX high resolution timer function, clock_gettime() is available.
 #cmakedefine ADEPT_UTILS_HAVE_CLOCK_GETTIME
 

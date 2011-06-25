@@ -39,7 +39,7 @@
 #include "timing.h"
 #include "adept-utils-config.h"
 
-#if defined(ADEPT_UTILS_BLUEGENE_L)
+#if defined(__blrts__)
 // -------------------------------------------------------- //
 // Timing code for BlueGene/L
 // -------------------------------------------------------- //
@@ -62,7 +62,7 @@ timing_t get_time_ns () {
 }
 
 
-#elif defined(ADEPT_UTILS_BLUEGENE_P)
+#elif defined(__bgp__)
 // -------------------------------------------------------- //
 // Timing code for BlueGene/P
 // -------------------------------------------------------- //
