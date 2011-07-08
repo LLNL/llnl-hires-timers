@@ -14,3 +14,8 @@ else()
 endif()
 
 include_directories(${PROJECT_BINARY_DIR})
+
+if (CMAKE_SYSTEM_NAME STREQUAL BlueGeneL)
+  include_directories(/bgl/BlueLight/ppcfloor/bglsys/include)
+endif()
+
