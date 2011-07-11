@@ -57,7 +57,13 @@ static double get_ns_per_cycle() {
 
 // returns time in nanoseconds.
 timing_t get_time_ns () {
-  static double ns_per_cycle = get_ns_per_cycle();
+  static double ns_per_cycle;
+  static int set_ns = 0;
+  if (!set_ns) {
+    set_ns = 1;
+    ns_per_cycle = get_ns_per_cycle();
+  }
+
   return (timing_t)(ns_per_cycle * rts_get_timebase());
 }
 
