@@ -12,10 +12,6 @@ cmake_minimum_required(VERSION 2.8)
 get_property(DEFAULT_SHARED GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS)
 option(BUILD_SHARED_LIBS "Build shared libraries?" ${DEFAULT_SHARED})
 
-# RPATH setup.  Default is to rpath everything.  Set the option to
-# false if you don't want this behavior.
-option(CMAKE_INSTALL_RPATH_USE_LINK_PATH "Add rpath for all dependencies." TRUE)
-
 # Check for various timing functions, so we can support highest-resolution timers available.
 include(CheckFunctionExists)
 
