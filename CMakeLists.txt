@@ -36,4 +36,4 @@ install(FILES ${PROJECT_BINARY_DIR}/adept-utils-config.h DESTINATION include)
 
 # Configure subdirectories here, after everything else, so that they
 # inherit variables set in the global scope.
-add_subdirectory(timing)
+add_subdirectory(src)
