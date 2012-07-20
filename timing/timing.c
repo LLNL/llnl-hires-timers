@@ -63,10 +63,8 @@ timing_t get_time_ns () {
     set_ns = 1;
     ns_per_cycle = get_ns_per_cycle();
   }
-
   return (timing_t)(ns_per_cycle * rts_get_timebase());
 }
-
 
 #elif defined(__bgp__)
 // -------------------------------------------------------- //
@@ -107,12 +105,35 @@ timing_t get_time_ns() {
   return llround(BGP_NS_PER_CYCLE * timebase());
 }
 
+#elif (defined(__bgq__)) 
+#include <stdio.h> 
+/* /\* Need -I/bgsys/drivers/ppcfloor AND */
+/*  * -I/bgsys/drivers/ppcfloor/spi/include/kernel/cnk/ */
+/*  * on compile line *\/ */
+ #include <spi/include/kernel/spec.h> 
 
+/*  /\* Read IBM cycle counter and write to 'dest' (unsigned long). */
+/*  * the __fence() calls keep the compiler from moving */
+/*  * code past this cycle counter read, in order to maximize the */
+/*  * truthfulness of the results. */
+/*  *\/ */
 
+ #define GET_CYCLES(dest) \ 
+   __fence(); \ 
+   dest = __mftb(); \ 
+   __fence(); 
+
+timing_t get_time_ns() 
+{
+   unsigned long num_cycles=0;
+   GET_CYCLES(num_cycles); 
+   return llround(num_cycles*BGQ_NS_PER_CYCLE); 
+}
+  
 #elif (defined(ADEPT_UTILS_HAVECLOCK_GETTIME) || defined(ADEPT_UTILS_HAVELIBRT))
 // -------------------------------------------------------- //
 // Timing code using Linux hires timers.
-// -------------------------------------------------------- //
+// -------------------------------------------------------- // 
 
 #include <time.h>
 #include <sys/time.h>
@@ -121,7 +142,7 @@ timing_t get_time_ns() {
   struct timespec ts;
   clock_gettime(CLOCK_MONOTONIC, &ts);
   return (ts.tv_sec * 1000000000ll + ts.tv_nsec);
-}
+} 
 
 #elif defined(ADEPT_UTILS_HAVE_MACH_TIME)
 // -------------------------------------------------------- //
@@ -139,7 +160,6 @@ timing_t get_time_ns() {
   return mach_absolute_time() * timebase_info.numer / timebase_info.denom;
 }
 
-
 #elif defined(ADEPT_UTILS_HAVE_GETTIMEOFDAY)
 // -------------------------------------------------------- //
 // Generic timing code using gettimeofday.
@@ -153,7 +173,6 @@ timing_t get_time_ns() {
   gettimeofday(&tv, NULL);
   return tv.tv_sec * 1000000000ll + tv.tv_usec * 1000ll;
 }
-
 
 #else // if we get to here, we don't even have gettimeofday.
 #error "NO SUPPORTED TIMING FUNCTIONS FOUND!"
