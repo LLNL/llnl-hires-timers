@@ -106,11 +106,11 @@ timing_t get_time_ns() {
 }
 
 #elif (defined(__bgq__)) 
-#include <stdio.h> 
+
 /* /\* Need -I/bgsys/drivers/ppcfloor AND */
 /*  * -I/bgsys/drivers/ppcfloor/spi/include/kernel/cnk/ */
 /*  * on compile line *\/ */
- #include <spi/include/kernel/spec.h> 
+#include <spi/include/kernel/spec.h> 
 
 /*  /\* Read IBM cycle counter and write to 'dest' (unsigned long). */
 /*  * the __fence() calls keep the compiler from moving */
@@ -118,29 +118,31 @@ timing_t get_time_ns() {
 /*  * truthfulness of the results. */
 /*  *\/ */
 
- #define GET_CYCLES(dest) \ 
-   __fence(); \ 
-   dest = __mftb(); \ 
-   __fence(); 
+#define BGQ_NS_PER_CYCLE (1.0/1.6)   // Nanoseconds per cycle on BGQ (1.6 Ghz clock) 
+
+#define GET_CYCLES(dest) \
+   __fence(); \
+   dest = __mftb(); \
+   __fence(); \
 
 timing_t get_time_ns() 
 {
    unsigned long num_cycles=0;
    GET_CYCLES(num_cycles); 
-   return llround(num_cycles*BGQ_NS_PER_CYCLE); 
+   return llround(num_cycles*BGQ_NS_PER_CYCLE);
 }
-  
+
 #elif (defined(ADEPT_UTILS_HAVECLOCK_GETTIME) || defined(ADEPT_UTILS_HAVELIBRT))
 // -------------------------------------------------------- //
 // Timing code using Linux hires timers.
-// -------------------------------------------------------- // 
+// -------------------------------------------------------- //
 
 #include <time.h>
 #include <sys/time.h>
 
 timing_t get_time_ns() {
   struct timespec ts;
-  clock_gettime(CLOCK_MONOTONIC, &ts);
+  clock_gettime(CLOCK_MONOTONIC, &ts); 
   return (ts.tv_sec * 1000000000ll + ts.tv_nsec);
 } 
 
