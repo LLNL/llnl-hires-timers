@@ -113,20 +113,16 @@ timing_t get_time_ns() {
 
 #include <spi/include/kernel/spec.h>
 
-#define BGQ_NS_PER_CYCLE (1.0/1.6)   // Nanoseconds per cycle on BGQ (1.6 Ghz clock)
+#define BGQ_NS_PER_CYCLE (1e9/1.6e9)   // Nanoseconds per cycle on BGQ (1.6 Ghz clock)
 
 // Read IBM cycle counter and write to 'dest' (unsigned long).
 // the __fence() calls keep the compiler from moving
 // code past this cycle counter read, in order to maximize the
 // truthfulness of the results.
-#define GET_CYCLES(dest) \
-   __fence(); \
-   dest = __mftb(); \
-   __fence();
-
 timing_t get_time_ns() {
-  unsigned long num_cycles=0;
-  GET_CYCLES(num_cycles);
+  __fence();
+  unsigned long num_cycles = __mftb();
+  __fence();
   return llround(num_cycles*BGQ_NS_PER_CYCLE);
 }
 
