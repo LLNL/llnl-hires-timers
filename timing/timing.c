@@ -1,15 +1,15 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Lawrence Livermore National Security, LLC.  
-// Produced at the Lawrence Livermore National Laboratory  
+// Copyright (c) 2010, Lawrence Livermore National Security, LLC.
+// Produced at the Lawrence Livermore National Laboratory
 // LLNL-CODE-417602
-// All rights reserved.  
-// 
+// All rights reserved.
+//
 // This file is part of Libra. For details, see http://github.com/tgamblin/libra.
 // Please also read the LICENSE file for further information.
-// 
+//
 // Redistribution and use in source and binary forms, with or without modification, are
 // permitted provided that the following conditions are met:
-// 
+//
 //  * Redistributions of source code must retain the above copyright notice, this list of
 //    conditions and the disclaimer below.
 //  * Redistributions in binary form must reproduce the above copyright notice, this list of
@@ -17,7 +17,7 @@
 //    provided with the distribution.
 //  * Neither the name of the LLNS/LLNL nor the names of its contributors may be used to endorse
 //    or promote products derived from this software without specific prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
 // OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
@@ -90,14 +90,14 @@ typedef union {
 static inline unsigned long long timebase() {
   bgp_time_reg reg;
   unsigned int utmp;
-  
+
   do {
     utmp      = _bgp_mfspr(SPRN_TBRU);
     reg.ul[1] = _bgp_mfspr(SPRN_TBRL);
     reg.ul[0] = _bgp_mfspr(SPRN_TBRU);
   }
   while( utmp != reg.ul[0] );
-  
+
   return reg.ull;
 }
 
@@ -105,31 +105,29 @@ timing_t get_time_ns() {
   return llround(BGP_NS_PER_CYCLE * timebase());
 }
 
-#elif (defined(__bgq__)) 
 
-/* /\* Need -I/bgsys/drivers/ppcfloor AND */
-/*  * -I/bgsys/drivers/ppcfloor/spi/include/kernel/cnk/ */
-/*  * on compile line *\/ */
-#include <spi/include/kernel/spec.h> 
+#elif (defined(__bgq__))
+// -------------------------------------------------------- //
+// Timing code using BG/Q hires timers.
+// -------------------------------------------------------- //
 
-/*  /\* Read IBM cycle counter and write to 'dest' (unsigned long). */
-/*  * the __fence() calls keep the compiler from moving */
-/*  * code past this cycle counter read, in order to maximize the */
-/*  * truthfulness of the results. */
-/*  *\/ */
+#include <spi/include/kernel/spec.h>
 
-#define BGQ_NS_PER_CYCLE (1.0/1.6)   // Nanoseconds per cycle on BGQ (1.6 Ghz clock) 
+#define BGQ_NS_PER_CYCLE (1.0/1.6)   // Nanoseconds per cycle on BGQ (1.6 Ghz clock)
 
+// Read IBM cycle counter and write to 'dest' (unsigned long).
+// the __fence() calls keep the compiler from moving
+// code past this cycle counter read, in order to maximize the
+// truthfulness of the results.
 #define GET_CYCLES(dest) \
    __fence(); \
    dest = __mftb(); \
-   __fence(); \
+   __fence();
 
-timing_t get_time_ns() 
-{
-   unsigned long num_cycles=0;
-   GET_CYCLES(num_cycles); 
-   return llround(num_cycles*BGQ_NS_PER_CYCLE);
+timing_t get_time_ns() {
+  unsigned long num_cycles=0;
+  GET_CYCLES(num_cycles);
+  return llround(num_cycles*BGQ_NS_PER_CYCLE);
 }
 
 #elif (defined(ADEPT_UTILS_HAVECLOCK_GETTIME) || defined(ADEPT_UTILS_HAVELIBRT))
@@ -142,9 +140,9 @@ timing_t get_time_ns()
 
 timing_t get_time_ns() {
   struct timespec ts;
-  clock_gettime(CLOCK_MONOTONIC, &ts); 
+  clock_gettime(CLOCK_MONOTONIC, &ts);
   return (ts.tv_sec * 1000000000ll + ts.tv_nsec);
-} 
+}
 
 #elif defined(ADEPT_UTILS_HAVE_MACH_TIME)
 // -------------------------------------------------------- //
