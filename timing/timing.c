@@ -108,36 +108,35 @@ timing_t get_time_ns() {
 
 #elif (defined(__bgq__))
 // -------------------------------------------------------- //
-// Timing code using BG/Q hires timers.
+// Timing code using BG/Q cycle counter.
 // -------------------------------------------------------- //
 
-#include <spi/include/kernel/spec.h>
-
+#include <hwi/include/bqc/A2_core.h>   // This gets us the register names on A2.
 #define BGQ_NS_PER_CYCLE (1e9/1.6e9)   // Nanoseconds per cycle on BGQ (1.6 Ghz clock)
 
-// Read IBM cycle counter and write to 'dest' (unsigned long).
-// the __fence() calls keep the compiler from moving
-// code past this cycle counter read, in order to maximize the
-// truthfulness of the results.
+// These calls keep the compiler from moving instructions before or after the
+// location where they're called in the code. This increases the "honesty" of
+// the measurement.
+#ifdef __xlc__
+// This is an XLC builtin function
+#define memory_fence() __fence()
+#else
+// This is a GNU inline assembler statement
+#define memory_fence() asm __volatile__ ("" ::: "memory")
+#endif
+
+// 64-bit read of BGQ Cycle counter register.
+#define get_bgq_cycles(dest) \
+  memory_fence(); \
+  asm volatile ("mfspr %0,%1" : "=&r" (dest) : "i" (SPRN_TBRO)); \
+  memory_fence();
+
+// get a timestamp in nanoseconds.  Note that this doesn't represent
+// a particular time; it's only useful for taking differences.
 timing_t get_time_ns() {
-  __fence();
-  unsigned long num_cycles = __mftb();
-  __fence();
-  return llround(num_cycles*BGQ_NS_PER_CYCLE);
-}
-
-#elif (defined(ADEPT_UTILS_HAVECLOCK_GETTIME) || defined(ADEPT_UTILS_HAVELIBRT))
-// -------------------------------------------------------- //
-// Timing code using Linux hires timers.
-// -------------------------------------------------------- //
-
-#include <time.h>
-#include <sys/time.h>
-
-timing_t get_time_ns() {
-  struct timespec ts;
-  clock_gettime(CLOCK_MONOTONIC, &ts);
-  return (ts.tv_sec * 1000000000ll + ts.tv_nsec);
+  uint64_t timebase;
+  get_bgq_cycles(timebase);
+  return timebase * BGQ_NS_PER_CYCLE;
 }
 
 #elif defined(ADEPT_UTILS_HAVE_MACH_TIME)
