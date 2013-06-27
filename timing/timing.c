@@ -139,6 +139,20 @@ timing_t get_time_ns() {
   return timebase * BGQ_NS_PER_CYCLE;
 }
 
+#elif (defined(ADEPT_UTILS_HAVECLOCK_GETTIME) || defined(ADEPT_UTILS_HAVELIBRT))
+// -------------------------------------------------------- //
+// Timing code using Linux hires timers.
+// -------------------------------------------------------- //
+
+#include <time.h>
+#include <sys/time.h>
+
+timing_t get_time_ns() {
+  struct timespec ts;
+  clock_gettime(CLOCK_MONOTONIC, &ts);
+  return (ts.tv_sec * 1000000000ll + ts.tv_nsec);
+}
+
 #elif defined(ADEPT_UTILS_HAVE_MACH_TIME)
 // -------------------------------------------------------- //
 // Timing code using Mach hires timers for Mac OS X.

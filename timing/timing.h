@@ -1,15 +1,15 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2010, Lawrence Livermore National Security, LLC.  
-// Produced at the Lawrence Livermore National Laboratory  
+// Copyright (c) 2010, Lawrence Livermore National Security, LLC.
+// Produced at the Lawrence Livermore National Laboratory
 // LLNL-CODE-417602
-// All rights reserved.  
-// 
+// All rights reserved.
+//
 // This file is part of Libra. For details, see http://github.com/tgamblin/libra.
 // Please also read the LICENSE file for further information.
-// 
+//
 // Redistribution and use in source and binary forms, with or without modification, are
 // permitted provided that the following conditions are met:
-// 
+//
 //  * Redistributions of source code must retain the above copyright notice, this list of
 //    conditions and the disclaimer below.
 //  * Redistributions in binary form must reproduce the above copyright notice, this list of
@@ -17,7 +17,7 @@
 //    provided with the distribution.
 //  * Neither the name of the LLNS/LLNL nor the names of its contributors may be used to endorse
 //    or promote products derived from this software without specific prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
 // OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
@@ -47,11 +47,11 @@ extern "C" {
 
 
   /// This is defined differently depending on compile-time timing options
-  /// and on the platform we're using.  It returns a current time stamp in 
+  /// and on the platform we're using.  It returns a current time stamp in
   /// nanoseconds using the most precise timing mechanism available on
   /// the host machine.
   timing_t get_time_ns();
-  
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus
