@@ -1,5 +1,5 @@
 # the name of the target operating system
-set(CMAKE_SYSTEM_NAME BlueGeneQ-dynamic)
+set(CMAKE_SYSTEM_NAME BlueGeneQ-static)
 
 set(TOOLCHAIN_LOCATION /bgsys/drivers/ppcfloor/gnu-linux/bin)
 set(TOOLCHAIN_PREFIX   powerpc64-bgq-linux-)
