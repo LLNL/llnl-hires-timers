@@ -1,6 +1,6 @@
 # hrTimer
 
-[![Build Status](https://travis-ci.org/alehaa/hrtimer.svg?branch=travis_ci)](https://travis-ci.org/alehaa/hrtimer)
+[![Build Status](https://travis-ci.org/alehaa/hrtimer.svg)](https://travis-ci.org/alehaa/hrtimer)
 
 This is the hrTimer library, a library to support platform-specific
 high-resolution timers by a platform-independent c-call.
