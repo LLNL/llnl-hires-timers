@@ -25,7 +25,7 @@ make
 
 
 
-# Usage
+## Usage
 
 You can use hrTimer by calling the following function:
 ```C
