@@ -34,155 +34,30 @@
 /// @author Todd Gamblin tgamblin@llnl.gov
 /// Implementations for get_time_ns() using platform-specific high-resolution timers.
 ///
-#include <math.h>
 
 #include "timing.h"
 #include "adept-utils-config.h"
 
 #if defined(__blrts__)
-// -------------------------------------------------------- //
-// Timing code for BlueGene/L
-// -------------------------------------------------------- //
-#include <rts.h>
-
-// this will return number of nanoseconds in a single BGL cycle
-// use for converting from cycle units returned by rts_gettimebase
-// to nanoseconds.
-static double get_ns_per_cycle() {
-  BGLPersonality personality;
-  if (rts_get_personality(&personality, sizeof(personality)) != 0)
-    return 0;
-  return 1.0e9/((double) personality.clockHz);
-}
-
-// returns time in nanoseconds.
-timing_t get_time_ns () {
-  static double ns_per_cycle;
-  static int set_ns = 0;
-  if (!set_ns) {
-    set_ns = 1;
-    ns_per_cycle = get_ns_per_cycle();
-  }
-  return (timing_t)(ns_per_cycle * rts_get_timebase());
-}
+    #include "bluegene_l.c"
 
 #elif defined(__bgp__)
-// -------------------------------------------------------- //
-// Timing code for BlueGene/P
-// -------------------------------------------------------- //
-#define SPRN_TBRL         0x10C        // Time Base Read Lower Register (user & sup R/O)
-#define SPRN_TBRU         0x10D        // Time Base Read Upper Register (user & sup R/O)
-#define BGP_NS_PER_CYCLE  (1.0/0.85)   // Nanoseconds per cycle on BGP (850Mhz clock)
-
-#define _bgp_mfspr(SPRN) ({ \
-   unsigned int tmp; \
-   do { \
-      asm volatile ("mfspr %0,%1" : "=&r" (tmp) : "i" (SPRN) : "memory" ); \
-   } while(0); \
-   tmp; \
-})
-
-typedef union {
-  unsigned int ul[2];
-  unsigned long long ull;
-} bgp_time_reg;
-
-static inline unsigned long long timebase() {
-  bgp_time_reg reg;
-  unsigned int utmp;
-
-  do {
-    utmp      = _bgp_mfspr(SPRN_TBRU);
-    reg.ul[1] = _bgp_mfspr(SPRN_TBRL);
-    reg.ul[0] = _bgp_mfspr(SPRN_TBRU);
-  }
-  while( utmp != reg.ul[0] );
-
-  return reg.ull;
-}
-
-timing_t get_time_ns() {
-  return llround(BGP_NS_PER_CYCLE * timebase());
-}
-
+    #include "bluegene_p.c"
 
 #elif (defined(__bgq__))
-// -------------------------------------------------------- //
-// Timing code using BG/Q cycle counter.
-// -------------------------------------------------------- //
-
-#include <hwi/include/bqc/A2_core.h>   // This gets us the register names on A2.
-#define BGQ_NS_PER_CYCLE (1e9/1.6e9)   // Nanoseconds per cycle on BGQ (1.6 Ghz clock)
-
-// These calls keep the compiler from moving instructions before or after the
-// location where they're called in the code. This increases the "honesty" of
-// the measurement.
-#ifdef __xlc__
-// This is an XLC builtin function
-#define memory_fence() __fence()
-#else
-// This is a GNU inline assembler statement
-#define memory_fence() asm __volatile__ ("" ::: "memory")
-#endif
-
-// 64-bit read of BGQ Cycle counter register.
-#define get_bgq_cycles(dest) \
-  memory_fence(); \
-  asm volatile ("mfspr %0,%1" : "=&r" (dest) : "i" (SPRN_TBRO)); \
-  memory_fence();
-
-// get a timestamp in nanoseconds.  Note that this doesn't represent
-// a particular time; it's only useful for taking differences.
-timing_t get_time_ns() {
-  uint64_t timebase;
-  get_bgq_cycles(timebase);
-  return timebase * BGQ_NS_PER_CYCLE;
-}
+    #include "bluegene_q.c"
 
 #elif (defined(ADEPT_UTILS_HAVECLOCK_GETTIME) || defined(ADEPT_UTILS_HAVELIBRT))
-// -------------------------------------------------------- //
-// Timing code using Linux hires timers.
-// -------------------------------------------------------- //
-
-#include <time.h>
-#include <sys/time.h>
-
-timing_t get_time_ns() {
-  struct timespec ts;
-  clock_gettime(CLOCK_MONOTONIC, &ts);
-  return (ts.tv_sec * 1000000000ll + ts.tv_nsec);
-}
+    #include "linux.c"
 
 #elif defined(ADEPT_UTILS_HAVE_MACH_TIME)
-// -------------------------------------------------------- //
-// Timing code using Mach hires timers for Mac OS X.
-// -------------------------------------------------------- //
-
-#include <mach/mach.h>
-#include <mach/mach_time.h>
-
-timing_t get_time_ns() {
-  static mach_timebase_info_data_t timebase_info;
-  if (timebase_info.denom == 0) {
-    mach_timebase_info(&timebase_info);
-  }
-  return mach_absolute_time() * timebase_info.numer / timebase_info.denom;
-}
+    #include "mach.c"
 
 #elif defined(ADEPT_UTILS_HAVE_GETTIMEOFDAY)
-// -------------------------------------------------------- //
-// Generic timing code using gettimeofday.
-// -------------------------------------------------------- //
+    #include "gettimeofday.c"
 
-#include <time.h>
-#include <sys/time.h>
+#else
+    // if we get to here, we don't even have gettimeofday.
+    #error "NO SUPPORTED TIMING FUNCTIONS FOUND!"
 
-timing_t get_time_ns() {
-  struct timeval tv;
-  gettimeofday(&tv, NULL);
-  return tv.tv_sec * 1000000000ll + tv.tv_usec * 1000ll;
-}
-
-#else // if we get to here, we don't even have gettimeofday.
-#error "NO SUPPORTED TIMING FUNCTIONS FOUND!"
 #endif // types of timers
