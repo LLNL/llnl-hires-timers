@@ -10,7 +10,9 @@ cmake_minimum_required(VERSION 2.8)
 
 # choose new behaviour for CMP0042
 # see http://www.cmake.org/cmake/help/v3.0/policy/CMP0042.html for more details
-cmake_policy(SET CMP0042 NEW)
+if (POLICY CMP0042)
+  cmake_policy(SET CMP0042 NEW)
+endif (POLICY CMP0042)
 
 
 # Add our module directory to the include path.
