@@ -35,6 +35,36 @@
 #
 
 #
+# determine best platform specific timer
+#
+
+# Check for various timing functions, so we can support highest-resolution
+# timers available.
+include(CheckFunctionExists)
+
+
+# librt
+set(CMAKE_REQUIRED_INCLUDES  time.h sys/time.h)
+set(CMAKE_REQUIRED_LIBRARIES rt)
+check_function_exists(clock_gettime HAVE_CLOCK_GETTIME)
+
+# gettimeofday
+set(CMAKE_REQUIRED_INCLUDES  sys/time.h)
+unset(CMAKE_REQUIRED_LIBRARIES)
+check_function_exists(gettimeofday HAVE_GETTIMEOFDAY)
+
+# OSX mach
+set(CMAKE_REQUIRED_INCLUDES  mach/mach.h mach/mach_time.h)
+unset(CMAKE_REQUIRED_LIBRARIES)
+check_function_exists(mach_absolute_time HAVE_MACH_TIME)
+
+
+# Configure a header file with all the variables we found.
+configure_file(config.h.in config.h)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+
+#
 # Timing library -- this is in straight C for greater accessibility
 #
 add_static_and_shared_library(adept_timing timing.c)

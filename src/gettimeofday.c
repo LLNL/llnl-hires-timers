@@ -37,10 +37,6 @@
 #include "timing.h"
 
 #include <stddef.h>
-
-
-#if defined(ADEPT_UTILS_HAVE_GETTIMEOFDAY)
-
 #include <sys/time.h>
 
 
@@ -49,5 +45,3 @@ timing_t get_time_ns() {
 	gettimeofday(&tv, NULL);
 	return tv.tv_sec * 1000000000ll + tv.tv_usec * 1000ll;
 }
-
-#endif

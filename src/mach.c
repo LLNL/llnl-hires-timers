@@ -36,9 +36,6 @@
 
 #include "timing.h"
 
-
-#if defined(ADEPT_UTILS_HAVE_MACH_TIME)
-
 #include <mach/mach.h>
 #include <mach/mach_time.h>
 
@@ -52,5 +49,3 @@ get_time_ns() {
 
 	return mach_absolute_time() * timebase_info.numer / timebase_info.denom;
 }
-
-#endif

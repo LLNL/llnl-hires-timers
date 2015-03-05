@@ -37,10 +37,6 @@
 #include "timing.h"
 
 #include <time.h>
-
-
-#if defined(ADEPT_UTILS_HAVECLOCK_GETTIME)
-
 #include <sys/time.h>
 
 
@@ -49,5 +45,3 @@ timing_t get_time_ns() {
 	clock_gettime(CLOCK_MONOTONIC, &ts);
 	return (ts.tv_sec * 1000000000ll + ts.tv_nsec);
 }
-
-#endif

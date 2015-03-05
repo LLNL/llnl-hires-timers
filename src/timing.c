@@ -36,7 +36,7 @@
 ///
 
 #include "timing.h"
-#include "adept-utils-config.h"
+#include "config.h"
 
 #if defined(__blrts__)
     #include "bluegene_l.c"
@@ -47,13 +47,13 @@
 #elif (defined(__bgq__))
     #include "bluegene_q.c"
 
-#elif (defined(ADEPT_UTILS_HAVECLOCK_GETTIME) || defined(ADEPT_UTILS_HAVELIBRT))
-    #include "linux.c"
+#elif defined(HAVE_CLOCK_GETTIME)
+    #include "rt.c"
 
-#elif defined(ADEPT_UTILS_HAVE_MACH_TIME)
+#elif defined(HAVE_MACH_TIME)
     #include "mach.c"
 
-#elif defined(ADEPT_UTILS_HAVE_GETTIMEOFDAY)
+#elif defined(HAVE_GETTIMEOFDAY)
     #include "gettimeofday.c"
 
 #else
