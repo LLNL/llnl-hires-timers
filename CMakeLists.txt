@@ -8,6 +8,11 @@ project(adept-utils)
 cmake_minimum_required(VERSION 2.8)
 
 
+# choose new behaviour for CMP0042
+# see http://www.cmake.org/cmake/help/v3.0/policy/CMP0042.html for more details
+cmake_policy(SET CMP0042 NEW)
+
+
 # Add our module directory to the include path.
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 include(StaticAndShared)
