@@ -36,6 +36,8 @@
 
 #include "timing.h"
 
+#include <stddef.h>
+
 
 #if defined(ADEPT_UTILS_HAVE_GETTIMEOFDAY)
 
