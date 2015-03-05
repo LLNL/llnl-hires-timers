@@ -39,7 +39,7 @@
 #include <time.h>
 
 
-#if (defined(ADEPT_UTILS_HAVECLOCK_GETTIME) || defined(ADEPT_UTILS_HAVELIBRT))
+#if defined(ADEPT_UTILS_HAVECLOCK_GETTIME)
 
 #include <sys/time.h>
 
