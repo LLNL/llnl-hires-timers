@@ -34,6 +34,12 @@
  * Please also read the LICENSE file for further information.
  */
 
+/** \file
+ *
+ * \author Todd Gamblin <tgamblin@llnl.gov>
+ */
+
+
 #ifndef __blrts__
 	#error "This file needs a BlueGene/L environmenr"
 #endif

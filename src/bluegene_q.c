@@ -34,6 +34,12 @@
  * Please also read the LICENSE file for further information.
  */
 
+/** \file
+ *
+ * \author Vivek L. Kale <kale2@rzuseqlac2.llnl.gov>
+ */
+
+
 #ifndef __bgq__
 	#error "This file needs a BlueGene/L environmenr"
 #endif

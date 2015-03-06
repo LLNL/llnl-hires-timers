@@ -27,7 +27,7 @@ make
 
 ## Usage
 
-You can use hrTimer by calling the following function:
+You can use hrTimer by including `hrtimer.h` and calling the following function:
 ```C
 timing_t get_time_ns();
 ```
@@ -37,8 +37,8 @@ timing_t get_time_ns();
 typedef unsigned long long timing_t;
 ```
 
-At compile-time you should link (static or dynamic) against libadept_timing,
-with `-ladept_timing`.
+At compile-time you should link (static or dynamic) against libhrtimer with
+`-lhrtimer`.
 
 
 

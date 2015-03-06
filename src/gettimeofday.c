@@ -34,6 +34,12 @@
  * Please also read the LICENSE file for further information.
  */
 
+/** \file
+ *
+ * \author Todd Gamblin <tgamblin@llnl.gov>
+ */
+
+
 #include "timing.h"
 
 #include <stddef.h>

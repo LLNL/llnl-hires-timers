@@ -34,6 +34,13 @@
 # Please also read the LICENSE file for further information.
 #
 
+## \file
+#
+# \author Todd Gamblin <tgamblin@llnl.gov>
+# \author Alexander Haase <alexander.haase@rwth-aachen.de>
+#
+
+
 #
 # determine best platform specific timer
 #
@@ -104,25 +111,22 @@ endif()
 #
 # build timing library
 #
-add_static_and_shared_library(adept_timing ${timing_sources})
-use_c99_for_target(adept_timing)
-use_c99_for_target(adept_timing_static)
+add_static_and_shared_library(hrtimer ${timing_sources})
+use_c99_for_target(hrtimer)
+use_c99_for_target(hrtimer_static)
 
-target_link_libraries(adept_timing ${timing_libs})
+target_link_libraries(hrtimer ${timing_libs})
 
 
 if (CMAKE_SYSTEM_NAME STREQUAL BlueGeneL)
     include_directories(/bgl/BlueLight/ppcfloor/bglsys/include)
 endif()
 
-include_directories(${PROJECT_BINARY_DIR}
-    /bgsys/drivers/ppcfloor/spi/include/kernel/cnk
-)
+include_directories(/bgsys/drivers/ppcfloor/spi/include/kernel/cnk)
 
 
 #
 # install library
 #
-install(TARGETS adept_timing adept_timing_static
-        DESTINATION lib EXPORT adept_utils-libs)
+install(TARGETS hrtimer hrtimer_static DESTINATION lib)
 install(FILES timing.h DESTINATION include)

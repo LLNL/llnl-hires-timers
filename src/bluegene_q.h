@@ -34,5 +34,11 @@
  * Please also read the LICENSE file for further information.
  */
 
+/** \file
+ *
+ * \author Todd Gamblin <tgamblin@llnl.gov>
+ */
+
+
 /// Nanoseconds per cycle on BGQ (1.6 Ghz clock)
 #define BGQ_NS_PER_CYCLE (1e9/1.6e9)

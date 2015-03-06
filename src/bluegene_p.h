@@ -34,6 +34,12 @@
  * Please also read the LICENSE file for further information.
  */
 
+/** \file
+ *
+ * \author Todd Gamblin <tgamblin@llnl.gov>
+ */
+
+
 /// Time Base Read Lower Register (user & sup R/O)
 #define SPRN_TBRL 0x10C
 
