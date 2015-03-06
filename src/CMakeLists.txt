@@ -41,7 +41,17 @@
 # Check for various timing functions, so we can support highest-resolution
 # timers available.
 include(CheckFunctionExists)
+include(CheckSymbolExists)
 
+
+# BlueGene/L
+CHECK_SYMBOL_EXISTS("__blrts__" "" HAVE_BLUEGENE_L)
+
+# BlueGene/P
+CHECK_SYMBOL_EXISTS("__bgp__" "" HAVE_BLUEGENE_P)
+
+# BlueGene/Q
+CHECK_SYMBOL_EXISTS("__bgq__" "" HAVE_BLUEGENE_Q)
 
 # librt
 set(CMAKE_REQUIRED_INCLUDES  time.h sys/time.h)
@@ -59,26 +69,60 @@ unset(CMAKE_REQUIRED_LIBRARIES)
 check_function_exists(mach_absolute_time HAVE_MACH_TIME)
 
 
-# Configure a header file with all the variables we found.
-configure_file(config.h.in config.h)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+#
+# set required source file by platform
+#
+set(timing_sources "")
+set(timing_libs "")
+
+if (HAVE_BLUEGENE_L)
+    set(timing_sources "bluegene_l.c")
+
+elseif (HAVE_BLUEGENE_P)
+    set(timing_sources "bluegene_p.c")
+
+elseif (HAVE_BLUEGENE_Q)
+    set(timing_sources "bluegene_q.c")
+
+elseif (HAVE_MACH_TIME)
+    set(timing_sources "mach.c")
+
+elseif (HAVE_CLOCK_GETTIME)
+    set(timing_sources "rt.c")
+    set(timing_libs "-lrt")
+
+elseif (HAVE_GETTIMEOFDAY)
+    set(timing_sources "gettimeofday.c")
+
+else ()
+    message(FATAL_ERROR "No supported timing functions found!")
+endif()
+
 
 
 #
-# Timing library -- this is in straight C for greater accessibility
+# build timing library
 #
-add_static_and_shared_library(adept_timing timing.c)
+add_static_and_shared_library(adept_timing ${timing_sources})
 use_c99_for_target(adept_timing)
 use_c99_for_target(adept_timing_static)
 
-install(TARGETS adept_timing adept_timing_static
-        DESTINATION lib EXPORT adept_utils-libs)
-install(FILES timing.h DESTINATION include)
+target_link_libraries(adept_timing ${timing_libs})
+
 
 if (CMAKE_SYSTEM_NAME STREQUAL BlueGeneL)
-  include_directories(/bgl/BlueLight/ppcfloor/bglsys/include)
+    include_directories(/bgl/BlueLight/ppcfloor/bglsys/include)
 endif()
 
 include_directories(${PROJECT_BINARY_DIR}
-/bgsys/drivers/ppcfloor/spi/include/kernel/cnk
+    /bgsys/drivers/ppcfloor/spi/include/kernel/cnk
 )
+
+
+#
+# install library
+#
+install(TARGETS adept_timing adept_timing_static
+        DESTINATION lib EXPORT adept_utils-libs)
+install(FILES timing.h DESTINATION include)

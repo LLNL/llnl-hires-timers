@@ -34,13 +34,16 @@
  * Please also read the LICENSE file for further information.
  */
 
+#ifndef __bgp__
+	#error "This file needs a BlueGene/P environmenr"
+#endif
+
+
 #include "timing.h"
 #include "bluegene_p.h"
 
 #include <math.h>
 
-
-#if defined(__bgp__)
 
 typedef union {
 	unsigned int ul[2];
@@ -78,5 +81,3 @@ timebase()
 timing_t get_time_ns() {
 	return llround(BGP_NS_PER_CYCLE * timebase());
 }
-
-#endif

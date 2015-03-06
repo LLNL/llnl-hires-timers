@@ -34,10 +34,12 @@
  * Please also read the LICENSE file for further information.
  */
 
+#ifndef __blrts__
+	#error "This file needs a BlueGene/L environmenr"
+#endif
+
+
 #include "timing.h"
-
-
-#if defined(__blrts__)
 
 #include <rts.h>
 
@@ -73,6 +75,3 @@ get_time_ns ()
 
 	return (timing_t)(ns_per_cycle * rts_get_timebase());
 }
-
-
-#endif

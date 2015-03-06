@@ -34,11 +34,12 @@
  * Please also read the LICENSE file for further information.
  */
 
+#ifndef __bgq__
+	#error "This file needs a BlueGene/L environmenr"
+#endif
+
 #include "timing.h"
 #include "bluegene_q.h"
-
-
-#if defined(__bgq__)
 
 #include <hwi/include/bqc/A2_core.h> // This gets us the register names on A2.
 
@@ -69,6 +70,3 @@ timing_t get_time_ns() {
 	get_bgq_cycles(timebase);
 	return timebase * BGQ_NS_PER_CYCLE;
 }
-
-
-#endif
