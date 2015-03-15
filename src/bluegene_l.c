@@ -41,7 +41,7 @@
 
 
 #ifndef __blrts__
-	#error "This file needs a BlueGene/L environmenr"
+	#error "This file needs a BlueGene/L environment"
 #endif
 
 

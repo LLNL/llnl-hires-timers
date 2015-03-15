@@ -41,7 +41,7 @@
 
 
 #ifndef __bgp__
-	#error "This file needs a BlueGene/P environmenr"
+	#error "This file needs a BlueGene/P environment"
 #endif
 
 
