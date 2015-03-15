@@ -1,4 +1,4 @@
-/* This file is part of hrtimer.
+/* This file is part of llnl-hires-timers.
  *
  * Copyright (c) 2010, Lawrence Livermore National Security, LLC.
  * Produced at the Lawrence Livermore National Laboratory

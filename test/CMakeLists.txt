@@ -1,4 +1,4 @@
-# This file is part of hrtimer.
+# This file is part of llnl-hires-timers.
 #
 # Copyright (c) 2010, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory
@@ -35,6 +35,6 @@
 #
 
 add_executable(timing-test timing-test.cpp)
-target_link_libraries(timing-test hrtimer)
+target_link_libraries(timing-test hires-timers)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)

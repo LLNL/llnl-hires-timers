@@ -1,4 +1,4 @@
-# This file is part of hrtimer.
+# This file is part of llnl-hires-timers.
 #
 # Copyright (c) 2010, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory
@@ -51,8 +51,7 @@ endif (POLICY CMP0042)
 
 # Add our module directory to the include path.
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
-include(StaticAndShared)
-include(C99Support)
+
 
 # Configure subdirectories here, after everything else, so that they
 # inherit variables set in the global scope.

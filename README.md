@@ -1,9 +1,9 @@
-# hrTimer
+# LLNL hires-timers
 
 [![Build Status](https://travis-ci.org/alehaa/hrtimer.svg)](https://travis-ci.org/alehaa/hrtimer)
 
-This is the hrTimer library, a library to support platform-specific
-high-resolution timers by a platform-independent c-call.
+This is the llnl-hires-timers library, a library to support platform-specific
+high-resolution timers by a platform-independent c function-call.
 
 At compile time the best available timer at your platform will be selected and
 the platform-specific call to get the best timer will be used to return the
@@ -38,7 +38,7 @@ typedef unsigned long long timing_t;
 ```
 
 At compile-time you should link (static or dynamic) against libhrtimer with
-`-lhrtimer`.
+`-lhires-timers`.
 
 
 

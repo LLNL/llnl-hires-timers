@@ -1,4 +1,4 @@
-# This file is part of hrtimer.
+# This file is part of llnl-hires-timers.
 #
 # Copyright (c) 2010, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory
@@ -111,11 +111,10 @@ endif()
 #
 # build timing library
 #
-add_static_and_shared_library(hrtimer ${timing_sources})
-use_c99_for_target(hrtimer)
-use_c99_for_target(hrtimer_static)
+include(StaticAndShared)
+add_static_and_shared_library(hires-timers ${timing_sources})
 
-target_link_libraries(hrtimer ${timing_libs})
+target_link_libraries(hires-timers ${timing_libs})
 
 
 if (CMAKE_SYSTEM_NAME STREQUAL BlueGeneL)
@@ -128,5 +127,5 @@ include_directories(/bgsys/drivers/ppcfloor/spi/include/kernel/cnk)
 #
 # install library
 #
-install(TARGETS hrtimer hrtimer_static DESTINATION lib)
+install(TARGETS hires-timers hires-timers_static DESTINATION lib)
 install(FILES timing.h DESTINATION include)
