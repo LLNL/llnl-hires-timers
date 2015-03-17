@@ -8,6 +8,6 @@ before_install:
   - sudo apt-get install cmake
 script:
   - mkdir build && cd build
-  - cmake ..
+  - cmake .. -DENABLE_TESTS=true
   - make
   - make test
