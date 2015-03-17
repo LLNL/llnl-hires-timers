@@ -128,4 +128,4 @@ include_directories(/bgsys/drivers/ppcfloor/spi/include/kernel/cnk)
 # install library
 #
 install(TARGETS hires-timers hires-timers_static DESTINATION lib)
-install(FILES timing.h DESTINATION include)
+install(FILES hires-timers.h DESTINATION include)

@@ -27,7 +27,8 @@ make
 
 ## Usage
 
-You can use hrTimer by including `hrtimer.h` and calling the following function:
+You can use llnl-hires-timers by including `hires-timers.h` and calling the following
+function:
 ```C
 timing_t get_time_ns();
 ```
@@ -37,7 +38,7 @@ timing_t get_time_ns();
 typedef unsigned long long timing_t;
 ```
 
-At compile-time you should link (static or dynamic) against libhrtimer with
+At compile-time you should link (static or dynamic) against libhires-timers with
 `-lhires-timers`.
 
 

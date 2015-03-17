@@ -40,7 +40,7 @@
  */
 
 
-#include "timing.h"
+#include "hires-timers.h"
 
 #include <time.h>
 #include <sys/time.h>

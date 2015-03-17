@@ -44,7 +44,7 @@
 	#error "This file needs a BlueGene/L environment"
 #endif
 
-#include "timing.h"
+#include "hires-timers.h"
 #include "bluegene_q.h"
 
 #include <hwi/include/bqc/A2_core.h> // This gets us the register names on A2.

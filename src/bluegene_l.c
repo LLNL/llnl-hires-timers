@@ -45,7 +45,7 @@
 #endif
 
 
-#include "timing.h"
+#include "hires-timers.h"
 
 #include <rts.h>
 

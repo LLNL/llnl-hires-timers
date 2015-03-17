@@ -40,7 +40,7 @@
  */
 
 
-#include "timing.h"
+#include "hires-timers.h"
 
 #include <mach/mach.h>
 #include <mach/mach_time.h>

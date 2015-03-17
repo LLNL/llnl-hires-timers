@@ -5,7 +5,7 @@
 #include <cmath>
 #include <algorithm>
 #include <numeric>
-#include <timing.h>
+#include <hires-timers.h>
 
 using namespace std;
 
