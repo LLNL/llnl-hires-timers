@@ -34,7 +34,22 @@
 # Please also read the LICENSE file for further information.
 #
 
-add_executable(timing-test timing-test.cpp)
-target_link_libraries(timing-test hires-timers)
 
-include_directories(${PROJECT_SOURCE_DIR}/src)
+## \brief Helper function to add a testcase
+#
+# \param p_testName Name of the testcase
+# \param p_sources Sourcefiles needed to compile testcase
+#
+function (add_timing_test p_testName p_sources)
+	# add executable
+	add_executable(${p_testName} ${p_sources})
+	include_directories(${PROJECT_SOURCE_DIR}/src)
+	target_link_libraries(${p_testName} hires-timers)
+
+	# add test case
+	add_test(NAME ${p_testName} COMMAND ${p_testName})
+endfunction(add_timing_test)
+
+
+# add basic test
+add_timing_test("basic" timing-test.cpp)

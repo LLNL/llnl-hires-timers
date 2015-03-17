@@ -45,7 +45,7 @@ cmake_minimum_required(VERSION 2.8)
 # choose new behaviour for CMP0042
 # see http://www.cmake.org/cmake/help/v3.0/policy/CMP0042.html for more details
 if (POLICY CMP0042)
-  cmake_policy(SET CMP0042 NEW)
+	cmake_policy(SET CMP0042 NEW)
 endif (POLICY CMP0042)
 
 
@@ -56,4 +56,12 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 # Configure subdirectories here, after everything else, so that they
 # inherit variables set in the global scope.
 add_subdirectory(src)
-add_subdirectory(test)
+
+
+# include test directory, if testing is enabled
+option(ENABLE_TESTS "Selects whether tests are built." FALSE)
+if (ENABLE_TESTS)
+	# enable testing
+	enable_testing()
+	add_subdirectory(test)
+endif ()
