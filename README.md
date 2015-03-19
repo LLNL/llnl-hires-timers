@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/scalability-llnl/llnl-hires-timers.svg)](https://travis-ci.org/scalability-llnl/llnl-hires-timers)
 
 This is the llnl-hires-timers library, a library to support platform-specific
-high-resolution timers by a platform-independent c function-call.
+high-resolution timers by a platform-independent c function-call: ``get_time_ns()``.
 
 At compile time the best available timer at your platform will be selected and
 the platform-specific call to get the best timer will be used to return the
