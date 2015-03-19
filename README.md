@@ -1,6 +1,6 @@
 # LLNL hires-timers
 
-[![Build Status](https://travis-ci.org/scalability-llnl/llnl-hires-timers.svg)](https://travis-ci.org/scalability-llnl/llnl-hires-timers?branch=master)
+[![Build Status](https://travis-ci.org/scalability-llnl/llnl-hires-timers.svg)](https://travis-ci.org/scalability-llnl/llnl-hires-timers)
 
 This is the llnl-hires-timers library, a library to support platform-specific
 high-resolution timers by a platform-independent c function-call: ``get_time_ns()``.
