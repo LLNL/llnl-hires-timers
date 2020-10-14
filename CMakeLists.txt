@@ -35,7 +35,7 @@
 #
 
 # set project name
-project(llnl-hires-timers)
+project(llnl-hires-timers C)
 
 
 # set minimum required CMake version
